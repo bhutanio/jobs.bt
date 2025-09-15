@@ -4,6 +4,9 @@
 
 @section('content')
 <div class="container my-5">
+    @if (session('status'))
+        <div class="alert alert-success">{{ session('status') }}</div>
+    @endif
     <h1>{{ $job->title }}</h1>
     <p><strong>Company:</strong> {{ optional($job->company)->name ?? 'Company' }} <x-company-badge :company="$job->company" /></p>
     <p><strong>Location:</strong> {{ $job->location ?? 'Location' }}</p>
@@ -13,10 +16,11 @@
     <article>
         {!! nl2br(e($job->description)) !!}
     </article>
-    <form method="post" action="/jobs/{{ $job->id }}/apply" style="margin-top: 1rem;">
-        <input type="hidden" name="resume_id" value="1" />
-        <button type="submit">Apply</button>
-    </form>
+    @auth
+        <a class="btn btn-primary" href="/jobs/{{ $job->id }}/apply" style="margin-top: 1rem;">Apply</a>
+    @else
+        <a class="btn btn-outline-primary" href="/login" style="margin-top: 1rem;">Log in to apply</a>
+    @endauth
 </div>
 @endsection
 

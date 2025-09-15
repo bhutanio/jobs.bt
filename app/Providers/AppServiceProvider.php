@@ -8,6 +8,7 @@ use App\Services\AI\AIResumeGeneratorService;
 use App\Services\AI\Providers\ProviderClient;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\FortifyServiceProvider as LaravelFortifyServiceProvider;
@@ -33,6 +34,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Use Bootstrap 5 pagination views to match the site's styling
+        Paginator::useBootstrapFive();
+
         // Custom named rate limiters per spec
         RateLimiter::for('ai', function (Request $request) {
             $user_id = optional($request->user())->id ?? $request->ip();

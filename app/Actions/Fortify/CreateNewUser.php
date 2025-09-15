@@ -33,12 +33,17 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'phone' => $input['phone'],
             'role' => $input['role'],
             'password' => Hash::make($input['password']),
         ]);
+
+        // Ensure Spatie role assignment matches selected role at registration
+        $user->syncRoles([$input['role']]);
+
+        return $user;
     }
 }

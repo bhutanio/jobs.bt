@@ -45,6 +45,11 @@
                             @endif
                         </div>
                     </form>
+                    <div class="mt-3">
+                        @if (Route::has('register'))
+                            <a class="btn btn-outline-secondary w-100" href="{{ route('register') }}">Don't have an account? Register</a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

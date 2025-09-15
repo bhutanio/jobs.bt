@@ -32,10 +32,21 @@
                     <span>{{ $job->published_at->diffForHumans() }}</span>
                 @endif
             </div>
+            @if (!empty($job->description))
+                <p style="margin-top: .5rem; color: #374151;">
+                    {{ $job->excerpt }}
+                </p>
+            @endif
         </div>
     @empty
         <p>No recent jobs.</p>
     @endforelse
+
+    @if (method_exists($jobs, 'links'))
+        <div style="margin-top: 1rem;">
+            {{ $jobs->links() }}
+        </div>
+    @endif
 </div>
 @endsection
 
