@@ -1,106 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Simple Job Site (Laravel 12)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 12 monolith for a simple job marketplace with Job Seeker and Employer roles. Includes authentication via Fortify, role/permission management via Spatie, AI-assisted resume and job draft generation (stubbed), recommendations, applications, notifications, and basic dashboards.
 
-## Simple Job Site - Quickstart
+### Features
+- **Auth (Fortify)**: registration, login, reset password, 2FA views configured in `app/Providers/FortifyServiceProvider.php`.
+- **Roles & Permissions**: via `spatie/laravel-permission` with gates in `app/Providers/AuthServiceProvider.php` and example routes restricting dashboards.
+- **Jobs & Applications**: browse jobs, view details, and apply (authenticated). See routes in `routes/web.php` and controllers in `app/Http/Controllers`.
+- **AI Draft Generators (stub)**: interfaces in `app/Services/AI` bound to `ProviderClient` in `AppServiceProvider`.
+- **Rate Limiting**: custom limiters for AI and apply actions in `AppServiceProvider`.
+- **Notifications**: stored in DB (see migration `2025_09_15_090000_create_notifications_table.php`) and mailed.
+- **Dashboards**: role-based redirects for `admin`, `employer`, `job_seeker`.
 
-This project is a Laravel 12 monolith implementing a simple job site with Job Seeker and Employer roles, AI-assisted resume and job generation, recommendations, and basic dashboards.
+### Tech Stack
+- PHP 8.2+, Laravel 12
+- Fortify (auth), Spatie Permission (roles)
+- Pest (tests), Pint (formatting)
+- Vite, Node 20+
 
-### Setup
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js 20+ and npm
+- SQLite (default) or another DB supported by Laravel
 
+### Installation
 ```bash
+# Clone and enter
+git clone <your-repo-url> jobs && cd jobs
+
+# Install PHP deps
+composer install
+
+# Copy env and app key
 cp .env.example .env
 php artisan key:generate
-composer install
+
+# Use SQLite by default
+# Create the DB file if it doesn't exist
+php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+
+# Configure your .env
+# DB_CONNECTION=sqlite (uncomment) or set up MySQL/PostgreSQL
+# MAIL_*, QUEUE_CONNECTION=database (optional)
+
+# Run migrations
+php artisan migrate --graceful --ansi
+
+# Seed roles, demo data, and an admin user
+php artisan db:seed --ansi
+# Demo data seeder (optional but recommended)
+php artisan db:seed --class=DemoSeeder --ansi
+
+# Install JS deps and build assets
 npm install
-php artisan migrate
+npm run build # or: npm run dev for hot reload
+```
 
-# Seed roles and demo data
-php artisan db:seed
-php artisan db:seed --class=DemoSeeder
-
-# Run tests (Pest)
-./vendor/bin/pest
-
-# Run dev servers
+### Running the App
+```bash
+# Start Laravel HTTP server and Vite in separate terminals
 php artisan serve
 npm run dev
+```
+Open http://127.0.0.1:8000
 
-# Format code
+### Demo Accounts
+- **Admin**: `admin@example.com` / `password`
+- **Employer**: `employer@example.com` / `password`
+- **Job Seeker**: `seeker@example.com` / `password`
+
+These are created by the seeders in `database/seeders`.
+
+### Testing
+```bash
+# Clear cached config to avoid env drift
+php artisan config:clear --ansi
+
+# Run the test suite (Pest)
+./vendor/bin/pest
+
+# Or via composer script
+composer test
+```
+
+### Development Utilities
+```bash
+# Run concurrent dev processes (HTTP server, queue listener, logs, Vite)
+composer dev
+
+# Lint/format with Pint
 ./vendor/bin/pint
 ```
 
-### Demo Accounts
+### Configuration Notes
+- **Auth Views**: registered in `FortifyServiceProvider` and rendered from `resources/views/auth/*`.
+- **Roles/Gates**: `is-admin`, `is-employer`, `is-job-seeker` defined in `AuthServiceProvider`.
+- **Dashboards**: `GET /dashboard` redirects to role dashboards; see `routes/web.php`.
+- **AI Providers**: `AIResumeGeneratorService` and `AIJobGeneratorService` are bound to `Providers/ProviderClient` (stub implementation) in `AppServiceProvider`. Replace bindings to integrate a real AI provider.
+- **Rate Limits**: named limiters `ai` and `apply` in `AppServiceProvider`.
+- **Mail/Queues**: configure `MAIL_*` and `QUEUE_CONNECTION` as needed.
 
-- Admin: `admin@example.com` / `password`
-- Employer: `employer@example.com` / `password`
-- Job Seeker: `seeker@example.com` / `password`
+### Environment (.env) Quick Reference
+```env
+APP_NAME="Simple Job Site"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
 
-### Rate Limits
+# SQLite (default)
+DB_CONNECTION=sqlite
+# For MySQL/Postgres, fill in DB_* accordingly
 
-- AI endpoints: 5/hour and 20/day per user/IP
-- Apply endpoint: 10/hour per user/IP
+# Fortify / Session basics
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
 
-### Notifications
+# Mail (optional for notifications)
+MAIL_MAILER=log
+MAIL_FROM_ADDRESS="no-reply@example.com"
+MAIL_FROM_NAME="Simple Job Site"
 
-- Notifications are stored in the `notifications` table and delivered via mail + database.
+# Queue (optional)
+QUEUE_CONNECTION=sync
+```
 
----
+### Project Scripts (Composer)
+- **dev**: runs server, queue:listen, pail logs, and Vite together.
+- **test**: clears config cache and runs `artisan test` (Pest powered).
 
-## About Laravel
+### Folder Highlights
+- `app/Services/AI/*`: AI interfaces and provider client.
+- `app/Providers/*`: service providers, Fortify, gates, rate limiting.
+- `routes/web.php`: homepage, job views, application routes, dashboards.
+- `database/seeders/*`: roles, demo data, admin user.
+- `tests/*`: Pest tests (Feature, Integration, Contract, Unit).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Replacing AI Stubs
+Implement real providers by creating a concrete client that implements:
+```php
+App\Services\AI\AIResumeGeneratorService::generateResumeDraft(array $input): array
+App\Services\AI\AIJobGeneratorService::generateJobDraft(array $input): array
+```
+Then bind it in `AppServiceProvider::register()` instead of `ProviderClient`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### License
+MIT
