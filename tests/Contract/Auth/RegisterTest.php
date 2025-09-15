@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Testing\Fluent\AssertableJson;
 
 it('POST /auth/register returns 201 with required fields', function () {
     $payload = [

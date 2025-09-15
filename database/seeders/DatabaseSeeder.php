@@ -6,7 +6,6 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RolesSeeder::class);
+        $this->call(DemoSeeder::class);
 
         // Create an admin user for convenience
         $admin = User::query()->firstOrCreate([

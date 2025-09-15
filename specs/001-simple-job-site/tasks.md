@@ -112,11 +112,11 @@
   - Files: all model files above and related migrations
 
 ### Services
-- [ ] T035 [P] AIResumeGeneratorService interface + provider adapter
+- [x] T035 [P] AIResumeGeneratorService interface + provider adapter
   - Files: `/Users/abi/Sites/jobs/app/Services/AI/AIResumeGeneratorService.php`, `/Users/abi/Sites/jobs/app/Services/AI/Providers/ProviderClient.php`
-- [ ] T036 [P] AIJobGeneratorService interface + provider adapter
+- [x] T036 [P] AIJobGeneratorService interface + provider adapter
   - Files: `/Users/abi/Sites/jobs/app/Services/AI/AIJobGeneratorService.php`, `/Users/abi/Sites/jobs/app/Services/AI/Providers/ProviderClient.php`
-- [ ] T037 [P] RecommendationsService (match jobs to seeker profile)
+- [x] T037 [P] RecommendationsService (match jobs to seeker profile)
   - Files: `/Users/abi/Sites/jobs/app/Services/RecommendationsService.php`
 
 ### Controllers, Routes, Policies
@@ -130,7 +130,7 @@
   - Files: `/Users/abi/Sites/jobs/app/Http/Controllers/AIController.php`, `/Users/abi/Sites/jobs/routes/api.php`
 - [x] T042 RecommendationsController@index + routes
   - Files: `/Users/abi/Sites/jobs/app/Http/Controllers/RecommendationsController.php`, `/Users/abi/Sites/jobs/routes/api.php`
-- [ ] T043 [P] Policies + Spatie roles/permissions (admin, job_seeker, employer)
+- [x] T043 [P] Policies + Spatie roles/permissions (admin, job_seeker, employer)
   - Files: `/Users/abi/Sites/jobs/app/Policies/*.php`, `/Users/abi/Sites/jobs/app/Providers/AuthServiceProvider.php`
 
 ### Views (Bootstrap + NobleUI)
@@ -142,27 +142,27 @@
   - Files: `/Users/abi/Sites/jobs/resources/views/resume/builder.blade.php`, `/Users/abi/Sites/jobs/resources/views/jobs/generator.blade.php`
 
 ## Phase 3.4: Integration
-- [ ] T047 Notifications: ApplicationSubmitted (in-app + email)
+- [x] T047 Notifications: ApplicationSubmitted (in-app + email)
   - Files: `/Users/abi/Sites/jobs/app/Notifications/ApplicationSubmitted.php`
-- [ ] T048 Rate limiting per spec (AI 5/h & 20/day; apply 10/h)
+- [x] T048 Rate limiting per spec (AI 5/h & 20/day; apply 10/h)
   - Files: `/Users/abi/Sites/jobs/app/Providers/RouteServiceProvider.php` (throttle), route middleware
-- [ ] T049 Resume privacy enforcement and access controls
+- [x] T049 Resume privacy enforcement and access controls
   - Files: Controllers/Policies ensuring only attached resumes visible to employers
-- [ ] T050 Company verification tag display (verified_at)
+- [x] T050 Company verification tag display (verified_at)
   - Files: `/Users/abi/Sites/jobs/resources/views/components/company-badge.blade.php`
-- [ ] T051 Performance: cache recent jobs list; ensure P50≤2s, P95≤4s
+- [x] T051 Performance: cache recent jobs list; ensure P50≤2s, P95≤4s
   - Files: JobsController index; caching config
-- [ ] T052 Logging and error handling (structured context per request)
+- [x] T052 Logging and error handling (structured context per request)
   - Files: middleware/logging config
 
 ## Phase 3.5: Polish
-- [ ] T053 [P] Unit tests for services (AI + Recommendations)
+- [x] T053 [P] Unit tests for services (AI + Recommendations)
   - Files: `/Users/abi/Sites/jobs/tests/Unit/AIResumeGeneratorServiceTest.php`, `/Users/abi/Sites/jobs/tests/Unit/AIJobGeneratorServiceTest.php`, `/Users/abi/Sites/jobs/tests/Unit/RecommendationsServiceTest.php`
-- [ ] T054 [P] Factories and seeders for demo data (companies, jobs, users)
+- [x] T054 [P] Factories and seeders for demo data (companies, jobs, users)
   - Files: `/Users/abi/Sites/jobs/database/factories/*`, `/Users/abi/Sites/jobs/database/seeders/DemoSeeder.php`
-- [ ] T055 [P] Documentation updates (quickstart.md, README, API contract cross-check)
+- [x] T055 [P] Documentation updates (quickstart.md, README, API contract cross-check)
   - Files: `/Users/abi/Sites/jobs/specs/001-simple-job-site/quickstart.md`, `/Users/abi/Sites/jobs/README.md`
-- [ ] T056 [P] Code style pass with Pint (ensure snake_case for variables where applicable)
+- [x] T056 [P] Code style pass with Pint (ensure snake_case for variables where applicable)
   - Command: `./vendor/bin/pint`
 
 ## Dependencies
@@ -187,9 +187,9 @@ Task: "php artisan make:test Contract/Recommendations/ListRecommendationsTest --
 ```
 
 ## Validation Checklist
-- [x] All contracts have corresponding tests
-- [x] All entities have model tasks
-- [x] All tests come before implementation
-- [x] Parallel tasks marked only when independent
-- [x] Each task specifies exact file path
-- [x] No task modifies same file as another [P] task
+- [ ] All contracts have corresponding tests
+- [ ] All entities have model tasks
+- [ ] All tests come before implementation
+- [ ] Parallel tasks marked only when independent
+- [ ] Each task specifies exact file path
+- [ ] No task modifies same file as another [P] task

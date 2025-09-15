@@ -21,9 +21,21 @@ npm install
 # Configure database in .env then run migrations
 php artisan migrate
 
-# Optional: seed base roles/permissions
+# Optional: seed base roles/permissions + demo data
 php artisan db:seed
+php artisan db:seed --class=DemoSeeder
 ```
+
+## Demo Accounts
+
+- Admin: `admin@example.com` / `password`
+- Employer: `employer@example.com` / `password`
+- Job Seeker: `seeker@example.com` / `password`
+
+## Notes
+
+- API rate limits: AI `5/hour` and `20/day` per user; apply `10/hour`.
+- Notifications are stored in the `notifications` table (mail + database).
 
 ## Tooling
 - Authentication: Laravel Fortify
@@ -43,7 +55,7 @@ php artisan serve
 npm run dev
 
 # Run tests (Pest)
-php artisan test
+./vendor/bin/pest
 
 # Format code
 ./vendor/bin/pint

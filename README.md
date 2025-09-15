@@ -7,6 +7,51 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Simple Job Site - Quickstart
+
+This project is a Laravel 12 monolith implementing a simple job site with Job Seeker and Employer roles, AI-assisted resume and job generation, recommendations, and basic dashboards.
+
+### Setup
+
+```bash
+cp .env.example .env
+php artisan key:generate
+composer install
+npm install
+php artisan migrate
+
+# Seed roles and demo data
+php artisan db:seed
+php artisan db:seed --class=DemoSeeder
+
+# Run tests (Pest)
+./vendor/bin/pest
+
+# Run dev servers
+php artisan serve
+npm run dev
+
+# Format code
+./vendor/bin/pint
+```
+
+### Demo Accounts
+
+- Admin: `admin@example.com` / `password`
+- Employer: `employer@example.com` / `password`
+- Job Seeker: `seeker@example.com` / `password`
+
+### Rate Limits
+
+- AI endpoints: 5/hour and 20/day per user/IP
+- Apply endpoint: 10/hour per user/IP
+
+### Notifications
+
+- Notifications are stored in the `notifications` table and delivered via mail + database.
+
+---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
