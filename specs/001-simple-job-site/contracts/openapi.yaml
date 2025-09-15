@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: Simple Job Site API
+  version: 0.1.0
+servers:
+  - url: https://api.example.com
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user (job_seeker or employer)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                phone: { type: string }
+                password: { type: string, format: password }
+                role: { type: string, enum: [admin, job_seeker, employer] }
+              required: [name, email, phone, password, role]
+      responses:
+        '201': { description: Created }
+  /jobs:
+    get:
+      summary: List recent jobs
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1 }
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Create job (employer)
+      responses:
+        '201': { description: Created }
+  /jobs/{id}:
+    get:
+      summary: Job detail
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /jobs/{id}/apply:
+    post:
+      summary: Apply to a job (job seeker)
+      responses:
+        '201': { description: Created }
+  /ai/resume:
+    post:
+      summary: Generate AI resume draft
+      responses:
+        '200': { description: OK }
+  /ai/job:
+    post:
+      summary: Generate AI job posting draft
+      responses:
+        '200': { description: OK }
+  /recommendations:
+    get:
+      summary: Get job recommendations for current user
+      responses:
+        '200': { description: OK }
+

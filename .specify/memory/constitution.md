@@ -1,50 +1,48 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Simple Job Site Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Simplicity
+- Single Laravel 12 monolith; prefer first-party features.
+- Use Eloquent directly; avoid Repository/UoW unless justified.
+- Introduce services only for substantial domain logic.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Laravel Conventions
+- PHP 8.3+, MySQL 8, Vite, SCSS, Bootstrap 5.3.6 + NobleUI, jQuery 3.7.1.
+- Auth via Fortify; RBAC via Spatie Permission; PDFs via barryvdh/laravel-dompdf.
+- Code style with Pint; variables use snake_case where practical.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Test-First (Pest)
+- TDD: write failing tests first; Red-Green-Refactor.
+- Contract tests from OpenAPI under `specs/001-simple-job-site/contracts/`.
+- Fast tests use SQLite in-memory; CI integration tests use MySQL.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Contracts & Integration
+- Public API defined by OpenAPI; changes require updated contract tests.
+- Integration tests cover auth, resumes, job CRUD, applications, recommendations.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Security, Privacy, Observability, Versioning
+- Enforce RBAC; phone verification; manual company verification.
+- Resume privacy by default; employers only see resumes attached to their jobs.
+- AI assistance requires explicit consent and clear labeling.
+- Rate limits: AI 5/h & 20/day per user; applications 10/h per seeker.
+- Structured logging with contextual ids; clear error/validation messaging.
+- Semantic versioning post-MVP; safe migrations with rollback paths.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
+- Performance: home jobs list P50 ≤ 2s, P95 ≤ 4s.
+- Data deletion: deactivate immediately; purge within 30 days (retain minimal legal/accounting ≤ 90 days).
+- No role switching after registration; new account needed for a different role.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Development Workflow
+- Keep docs in `specs/001-simple-job-site/`; contracts live in `/contracts/`.
+- Start with entities and contracts → tests → implementation.
+- Avoid premature abstraction; prefer early returns and small controllers.
+- Use queues only when performance/UX requires.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+- This constitution supersedes other practices for this feature.
+- Deviations require documented rationale and review approval.
+- All PRs must pass tests, Pint, and constitution checks.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 2.1.1 | **Ratified**: 2025-09-15 | **Last Amended**: 2025-09-15

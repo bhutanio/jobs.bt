@@ -1,0 +1,57 @@
+// Bootstrap core
+@import "bootstrap/scss/bootstrap";
+
+// NobleUI placeholder (user to add theme assets if licensed)
+// @import "nobleui/scss/nobleui";
+
+// Project overrides
+body {
+  background-color: #f8fafc;
+}
+
+// Custom Bootstrap enhancements
+.min-vh-75 {
+  min-height: 75vh;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+// Custom card hover effects
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+// Custom button styles
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+// Custom navbar
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+// Custom list group
+.list-group-item {
+  border-radius: 0.5rem !important;
+  margin-bottom: 0.5rem;
+}
+
+// Custom footer
+footer {
+  margin-top: auto;
+}
+
+
